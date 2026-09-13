@@ -526,7 +526,7 @@ export const BEASTS_DATA = [
     name: "The Niffler",
     species: "Niffler",
     classification: "XXX",
-    image: "assets/images/crest-hufflepuff.jpg",
+    image: "assets/images/niffler.jpg",
     habitat: "Britain (underground lairs up to twenty feet below surface)",
     abilities: [
       "Uncanny magnetic attraction to shiny gold, jewels, and silver",
@@ -540,7 +540,7 @@ export const BEASTS_DATA = [
     name: "Thestral",
     species: "Winged Horse",
     classification: "XXXX",
-    image: "assets/images/crest-ravenclaw.jpg",
+    image: "assets/images/thestral.jpg",
     habitat: "Forbidden Forest of Hogwarts",
     abilities: [
       "Visible only to those who have witnessed and emotionally understood death",
@@ -548,6 +548,34 @@ export const BEASTS_DATA = [
       "Ghostly reptilian winged flight with silent velocity"
     ],
     lore: "Often wrongly regarded as an omen of misfortune due to their skeletal appearance, Thestrals are actually gentle, intelligent, and fiercely loyal beasts."
+  },
+  {
+    id: "horntail",
+    name: "Hungarian Horntail",
+    species: "Dragon",
+    classification: "XXXXX (Known wizard killer / impossible to train)",
+    image: "assets/images/horntail.jpg",
+    habitat: "Hungarian crags and mountain peaks",
+    abilities: [
+      "Fierce jet of flame reaching up to fifty feet",
+      "Deadly spiked tail and razor-sharp bronze horns",
+      "Exceptional speed and agility in aerial combat"
+    ],
+    lore: "Considered the most dangerous of all dragon breeds. Harry Potter famously faced a nesting Hungarian Horntail during the First Task of the Triwizard Tournament."
+  },
+  {
+    id: "basilisk",
+    name: "Salazar's Basilisk",
+    species: "King of Serpents",
+    classification: "XXXXX",
+    image: "assets/images/basilisk.jpg",
+    habitat: "Chamber of Secrets deep beneath Hogwarts Castle",
+    abilities: [
+      "Instantaneous lethal gaze to anyone looking directly into its eyes",
+      "Petrifying indirect reflection gaze",
+      "Deadly venom that destroys Horcruxes and dissolves virtually any substance"
+    ],
+    lore: "Bred by Salazar Slytherin and sealed within the Chamber of Secrets for a thousand years until awakened by Tom Riddle. Slain by Harry Potter with the Sword of Gryffindor."
   }
 ];
 
