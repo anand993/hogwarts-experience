@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" data-active-house="gryffindor">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Wizarding World — Hogwarts Interactive Fan Experience</title>
+  <meta name="description" content="Immerse yourself in the magical universe of Harry Potter. Explore Hogwarts houses, experience the interactive Sorting Hat quiz, cast spells with screen effects, inspect character lore, and discover magical beasts." />
+  <meta name="theme-color" content="#0a0b10" />
+  <meta property="og:title" content="The Wizarding World — Hogwarts Interactive Fan Experience" />
+  <meta property="og:description" content="Discover your Hogwarts house, cast spells in the grimoire, and explore the secret chambers of Hogwarts." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/images/hogwarts-twilight.jpg" />
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/magical-theme.css" />
+  <link rel="stylesheet" href="styles/animations.css" />
+</head>
+<body>
+
+  <!-- Fullscreen Wand Spark Particle Canvas -->
+  <canvas id="wand-canvas" aria-hidden="true"></canvas>
+
+  <!-- Screen Visual FX Overlays -->
+  <div id="lumos-overlay" aria-hidden="true"></div>
+  <div id="patronus-overlay" aria-hidden="true">
+    <div class="patronus-silhouette">🦌</div>
+  </div>
+  <div id="spell-screen-flash" aria-hidden="true"></div>
+
+  <!-- Header & Navigation -->
+  <header class="site-header" role="banner">
+    <div class="nav-inner">
+      <div class="brand-group">
+        <a href="#" class="brand-logo" aria-label="Wizarding World Home">
+          <span class="brand-symbol">⚡</span>
+          <span class="brand-text cinzel-decorative">HOGWARTS</span>
+        </a>
+        <div class="brand-divider" aria-hidden="true"></div>
+      </div>
+
+      <nav role="navigation" aria-label="Main Navigation">
+        <ul class="nav-links-menu">
+          <li><a href="#houses" class="nav-link">Houses</a></li>
+          <li><a href="#sorting-hat" class="nav-link">Sorting Hat</a></li>
+          <li><a href="#spells" class="nav-link">Spells</a></li>
+          <li><a href="#characters" class="nav-link">Characters</a></li>
+          <li><a href="#beasts" class="nav-link">Magical Beasts</a></li>
+          <li><a href="#map" class="nav-link">Castle Map</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Quidditch House Points & Snitch Launcher -->
+        <button id="snitch-toggle-btn" class="house-points-badge" title="Catch the flying Golden Snitch! Click to summon / re-launch">
+          <span class="points-trophy">🏆</span>
+          <span id="house-points-counter">0 pts</span>
+        </button>
+
+        <!-- Active House Badge -->
+        <div id="active-house-badge" class="active-house-badge" title="Current House Allegiance">
+          <img src="assets/images/crest-gryffindor.jpg" alt="Gryffindor" class="nav-house-crest" />
+          <span class="badge-house-name">Gryffindor</span>
+        </div>
+
+        <!-- Ambient Soundscape Button -->
+        <button id="audio-toggle-btn" class="btn-audio-toggle" aria-label="Toggle Hogwarts Atmosphere Soundscape" title="Toggle Ambient Fireplace & Chimes">
+          <span class="audio-icon">🔇</span>
+          <span class="audio-label">Atmosphere</span>
+        </button>
+
+        <!-- Secret Chamber / Owner Admin Portal Button -->
+        <button id="admin-portal-nav-btn" class="btn-secret-vault" title="Headmaster's Chamber / Admin (or cast Alohomora)">
+          🗝️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+      <div class="hero-bg-wrapper">
+        <img src="assets/images/hogwarts-twilight.jpg" alt="Hogwarts Castle at Twilight" class="hero-bg-img" />
+        <div class="hero-vignette"></div>
+      </div>
+
+      <!-- Floating Candles Atmosphere -->
+      <div class="floating-candles-container" aria-hidden="true">
+        <div class="floating-candle candle-1"></div>
+        <div class="floating-candle candle-2"></div>
+        <div class="floating-candle candle-3"></div>
+        <div class="floating-candle candle-4"></div>
+        <div class="floating-candle candle-5"></div>
+      </div>
+
+      <div class="container hero-content">
+        <div class="hero-eyebrow">
+          <span>✦</span> Draco Dormiens Nunquam Titillandus <span>✦</span>
+        </div>
+        <h1 class="hero-title cinzel-title">
+          WELCOME TO THE WIZARDING WORLD
+        </h1>
+        <p class="hero-description">
+          Step across the threshold of Hogwarts School of Witchcraft and Wizardry. Discover your house destiny, master the ancient incantations, uncover legendary artefacts, and explore secret castle chambers.
+        </p>
+        <div class="hero-cta-group">
+          <a href="#sorting-hat" class="btn-magical-gold">
+            <span class="btn-sparkle">✦</span> Take The Sorting Ceremony
+          </a>
+          <a href="#spells" class="btn-magical-secondary">
+            📜 Consult The Spell Grimoire
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: The Four Houses Pavilion -->
+    <section class="section-wrapper" id="houses">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Hogwarts Foundations</span>
+          <h2 class="section-title cinzel-title">The Four Great Houses</h2>
+          <p class="section-subtitle">
+            Founded over a millennium ago by the four greatest witches and wizards of the age. Each house represents distinct virtues, relics, and timeless magical legacies.
+          </p>
+          <div class="gold-filigree-divider">
+            <span class="filigree-emblem">⚡</span>
+          </div>
+        </div>
+
+        <div id="houses-grid" class="houses-grid">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Interactive Sorting Hat Ceremony -->
+    <section class="section-wrapper" id="sorting-hat">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Destiny Awaits</span>
+          <h2 class="section-title cinzel-title">The Sorting Ceremony</h2>
+          <p class="section-subtitle">
+            Place the ancient, enchanted Sorting Hat upon your head. Answer honestly, for the Hat peers deep into your character and chooses where you truly belong.
+          </p>
+          <div class="gold-filigree-divider">
+            <span class="filigree-emblem">🧙‍♂️</span>
+          </div>
+        </div>
+
+        <div id="sorting-hat-stage" class="sorting-stage-container">
+          <!-- Dynamically rendered by sortingHat.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: The Great Grimoire & Interactive Spellcaster -->
+    <section class="section-wrapper" id="spells">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Wandwork & Charms</span>
+          <h2 class="section-title cinzel-title">The Spellcaster Grimoire</h2>
+          <p class="section-subtitle">
+            Master the most renowned incantations of the wizarding world. Cast directly from the codex or type your incantation into the spell field to ignite dynamic visual magic!
+          </p>
+          <div class="gold-filigree-divider">
+            <span class="filigree-emblem">🪄</span>
+          </div>
+        </div>
+
+        <!-- Interactive Casting Arena -->
+        <div class="spell-interactive-arena glass-panel">
+          <div class="arena-header">
+            <h3 class="arena-title cinzel-title">⚡ Interactive Spellcasting Arena</h3>
+            <p class="arena-hint">Try typing: <em>Lumos</em>, <em>Nox</em>, <em>Expecto Patronum</em>, <em>Wingardium Leviosa</em>, <em>Riddikulus</em>, <em>Sectumsempra</em>, or <em>Petrificus Totalus</em></p>
+          </div>
+          <div class="spell-input-group">
+            <input type="text" id="incantation-input" class="incantation-input" placeholder="Inscribe incantation..." autocomplete="off" />
+            <button id="cast-incantation-btn" class="btn-magical-gold">
+              Cast Magic ⚡
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="filter-pills-row">
+          <button class="filter-pill spell-filter-btn active-filter" data-category="all">All Spells</button>
+          <button class="filter-pill spell-filter-btn" data-category="charm">Charms</button>
+          <button class="filter-pill spell-filter-btn" data-category="defense">Defense / Duelling</button>
+          <button class="filter-pill spell-filter-btn" data-category="curse">Dark Arts / Curses</button>
+        </div>
+
+        <div id="spells-catalog-grid" class="spells-grid">
+          <!-- Dynamically populated by spellcaster.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Compendium of Witches & Wizards -->
+    <section class="section-wrapper" id="characters">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Wizarding Archives</span>
+          <h2 class="section-title cinzel-title">Compendium of Witches & Wizards</h2>
+          <p class="section-subtitle">
+            Examine the biographies, wand specifications, and corporeal patronuses of legendary wizards and witches who shaped the history of magic.
+          </p>
+          <div class="gold-filigree-divider">
+            <span class="filigree-emblem">📜</span>
+          </div>
+        </div>
+
+        <!-- Character Filter Buttons -->
+        <div class="filter-pills-row">
+          <button class="filter-pill char-filter-btn active-filter" data-filter="all">All Icons</button>
+          <button class="filter-pill char-filter-btn" data-filter="gryffindor">Gryffindor</button>
+          <button class="filter-pill char-filter-btn" data-filter="slytherin">Slytherin</button>
+          <button class="filter-pill char-filter-btn" data-filter="ravenclaw">Ravenclaw</button>
+          <button class="filter-pill char-filter-btn" data-filter="hufflepuff">Hufflepuff</button>
+          <button class="filter-pill char-filter-btn" data-filter="staff">Hogwarts Staff</button>
+          <button class="filter-pill char-filter-btn" data-filter="dark-forces">Dark Forces 💀</button>
+        </div>
+
+        <div id="characters-grid" class="characters-grid">
+          <!-- Dynamically populated by app.js with 3D card tilt -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Sanctuary of Magical Beasts -->
+    <section class="section-wrapper" id="beasts">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Magizoology</span>
+          <h2 class="section-title cinzel-title">Sanctuary of Magical Beasts</h2>
+          <p class="section-subtitle">
+            From immortal fire-born Phoenixes to proud Hippogriffs, observe the extraordinary creatures cataloged by the Department for the Regulation and Control of Magical Creatures.
+          </p>
+          <div class="gold-filigree-divider">
+            <span class="filigree-emblem">🦅</span>
+          </div>
+        </div>
+
+        <div id="beasts-grid" class="beasts-grid">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Castle Map & The Marauder's Map Secret Passages -->
+    <section class="section-wrapper" id="map">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Castle Exploration</span>
+          <h2 class="section-title cinzel-title">The Marauder's Map of Hogwarts</h2>
+          <p class="section-subtitle">
+            "Messrs Moony, Wormtail, Padfoot, and Prongs are proud to present the Hogwarts Secret Passages." Trace the footsteps across enchanted parchment to reveal hidden chambers and secret passageways.
+          </p>
+          <div class="gold-filigree-divider">
+            <span class="filigree-emblem">👣</span>
+          </div>
+        </div>
+
+        <!-- The Marauder's Enchanted Parchment Stage -->
+        <div class="marauders-enchanted-board" id="marauders-board">
+          
+          <!-- Top Parchment Ribbon Header -->
+          <div class="marauder-ribbon-header">
+            <div class="marauder-flourish-left">❧</div>
+            <div class="marauder-header-text">
+              <span class="marauder-purveyors">Messrs Moony, Wormtail, Padfoot, & Prongs</span>
+              <h3 class="marauder-stage-title">HOGWARTS CASTLE SECRET PASSAGES</h3>
+            </div>
+            <div class="marauder-flourish-right">❧</div>
+
+            <!-- Wand Tap Activation Bar -->
+            <div class="marauder-incantation-bar">
+              <button id="btn-marauder-reveal" class="btn-marauder-reveal active" title="Tap map with wand to reveal footprints">
+                🪄 "I solemnly swear that I am up to no good"
+              </button>
+              <button id="btn-marauder-hide" class="btn-marauder-hide" title="Wipe ink from parchment">
+                "Mischief Managed"
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Blueprint & Dossier Layout -->
+          <div class="marauders-main-grid">
+            
+            <!-- Visual Hogwarts Parchment Map with SVG architecture & Footstep Pins -->
+            <div class="marauder-blueprint-container" id="marauder-blueprint-container">
+              <div class="parchment-vignette-overlay"></div>
+              
+              <!-- Architectural Hogwarts SVG Floorplan with Corridors & Secret Passageways -->
+              <svg class="marauder-castle-svg" viewBox="0 0 1000 650" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <pattern id="parchment-hatch" width="16" height="16" patternUnits="userSpaceOnUse">
+                    <path d="M0 16 L16 0 M-4 4 L4 -4 M12 20 L20 12" stroke="rgba(139, 90, 43, 0.08)" stroke-width="1"/>
+                  </pattern>
+                </defs>
+                <rect width="1000" height="650" fill="url(#parchment-hatch)" />
+
+                <!-- Castle Towers, Turrets & Wing Outlines -->
+                <!-- Outer Walls -->
+                <polygon points="80,520 80,180 200,110 360,140 450,60 650,60 720,120 920,160 920,530 800,590 180,590" fill="none" stroke="#8b5a2b" stroke-width="2.5" stroke-dasharray="4,2"/>
+
+                <!-- Great Hall Core -->
+                <rect x="400" y="270" width="200" height="150" rx="8" fill="rgba(212, 175, 55, 0.08)" stroke="#6d4423" stroke-width="2"/>
+                <line x1="420" y1="310" x2="580" y2="310" stroke="#8b5a2b" stroke-width="1.2" stroke-dasharray="2,2"/>
+                <line x1="420" y1="345" x2="580" y2="345" stroke="#8b5a2b" stroke-width="1.2" stroke-dasharray="2,2"/>
+                <line x1="420" y1="380" x2="580" y2="380" stroke="#8b5a2b" stroke-width="1.2" stroke-dasharray="2,2"/>
+                <text x="500" y="295" text-anchor="middle" class="svg-map-label">THE GREAT HALL</text>
+
+                <!-- Astronomy Tower -->
+                <circle cx="820" cy="110" r="46" fill="rgba(142, 68, 173, 0.07)" stroke="#6d4423" stroke-width="2"/>
+                <circle cx="820" cy="110" r="28" fill="none" stroke="#8b5a2b" stroke-width="1" stroke-dasharray="3,3"/>
+                <text x="820" y="115" text-anchor="middle" class="svg-map-label">ASTRONOMY TOWER</text>
+
+                <!-- Potions Dungeon -->
+                <rect x="180" y="440" width="180" height="110" rx="6" fill="rgba(46, 204, 113, 0.06)" stroke="#6d4423" stroke-width="2"/>
+                <text x="270" y="495" text-anchor="middle" class="svg-map-label">POTIONS DUNGEON</text>
+
+                <!-- Gryffindor Tower -->
+                <circle cx="340" cy="160" r="48" fill="rgba(192, 57, 43, 0.06)" stroke="#6d4423" stroke-width="2"/>
+                <text x="340" y="165" text-anchor="middle" class="svg-map-label">GRYFFINDOR TOWER</text>
+
+                <!-- Headmaster's Turret -->
+                <polygon points="620,70 660,135 580,135" fill="rgba(243, 156, 18, 0.08)" stroke="#6d4423" stroke-width="2"/>
+                <text x="620" y="125" text-anchor="middle" class="svg-map-label">HEADMASTER SANCTUM</text>
+
+                <!-- Room of Requirement -->
+                <rect x="670" y="195" width="140" height="85" rx="6" fill="rgba(52, 152, 219, 0.06)" stroke="#6d4423" stroke-width="1.8" stroke-dasharray="4,2"/>
+                <text x="740" y="240" text-anchor="middle" class="svg-map-label">ROOM OF REQUIREMENT</text>
+
+                <!-- Chamber of Secrets Pipe -->
+                <ellipse cx="560" cy="490" rx="80" ry="40" fill="rgba(26, 71, 42, 0.07)" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="6,3"/>
+                <text x="560" y="495" text-anchor="middle" class="svg-map-label">CHAMBER OF SECRETS</text>
+
+                <!-- Whomping Willow Grounds -->
+                <circle cx="130" cy="265" r="38" fill="none" stroke="#8b5a2b" stroke-width="2" stroke-dasharray="5,3"/>
+                <text x="130" y="270" text-anchor="middle" class="svg-map-label">WHOMPING WILLOW</text>
+
+                <!-- Dotted Secret Passageways Connecting Chambers -->
+                <!-- Willow to Dungeons (Red Secret Path) -->
+                <path d="M 130 265 Q 180 340 270 440" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6,6" class="svg-secret-path"/>
+                <!-- Dungeons to Great Hall -->
+                <path d="M 360 470 Q 420 440 440 420" fill="none" stroke="#8b5a2b" stroke-width="2" stroke-dasharray="4,4" class="svg-passage-path"/>
+                <!-- Great Hall to Astronomy Tower -->
+                <path d="M 600 310 Q 710 260 820 156" fill="none" stroke="#8b5a2b" stroke-width="2" stroke-dasharray="4,4" class="svg-passage-path"/>
+                <!-- Room of Requirement to Hog's Head Secret Tunnel -->
+                <path d="M 810 235 Q 880 245 930 290" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6,6" class="svg-secret-path"/>
+                <!-- Gryffindor to Headmaster -->
+                <path d="M 388 160 Q 480 115 580 125" fill="none" stroke="#8b5a2b" stroke-width="2" stroke-dasharray="4,4" class="svg-passage-path"/>
+
+                <!-- Vintage Compass Rose -->
+                <g transform="translate(70, 75) scale(0.6)">
+                  <circle cx="0" cy="0" r="50" fill="none" stroke="#8b5a2b" stroke-width="1.5"/>
+                  <polygon points="0,-45 8,-12 0,0 -8,-12" fill="#8b5a2b"/>
+                  <polygon points="0,45 8,12 0,0 -8,12" fill="none" stroke="#8b5a2b"/>
+                  <polygon points="45,0 12,8 0,0 12,-8" fill="none" stroke="#8b5a2b"/>
+                  <polygon points="-45,0 -12,8 0,0 -12,-8" fill="none" stroke="#8b5a2b"/>
+                  <text x="0" y="-50" text-anchor="middle" font-family="'Cinzel', serif" font-size="16" fill="#6d4423" font-weight="bold">N</text>
+                </g>
+              </svg>
+
+              <!-- Interactive Chamber Hotspots & Animated Walking Footsteps layer -->
+              <div id="marauder-hotspots-layer" class="marauder-hotspots-layer">
+                <!-- Injected by app.js -->
+              </div>
+            </div>
+
+            <!-- Right Column: The Enchanted Parchment Dossier Scroll -->
+            <div class="marauder-dossier-column">
+              <div id="map-secret-display" class="map-secret-display">
+                <!-- Filled with rich parchment dossier by app.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Chamber Quick-Select Bar -->
+          <div class="map-chambers-nav">
+            <span class="chambers-nav-label">🗺️ Explore Castle Chambers:</span>
+            <div id="map-locations-list" class="map-locations-pills">
+              <!-- Location pill buttons populated by app.js -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Daily Prophet Bar & Rotating Quote Ticker -->
+  <div class="daily-prophet-bar" role="complementary">
+    <div class="container prophet-inner">
+      <span class="prophet-badge">THE DAILY PROPHET</span>
+      <span id="daily-prophet-quote" class="prophet-quote">"Happiness can be found even in the darkest of times, if one only remembers to turn on the light." — Albus Dumbledore</span>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <span class="brand-symbol">⚡</span>
+            <span class="brand-text cinzel-decorative">THE WIZARDING WORLD</span>
+          </div>
+          <p>
+            An interactive tribute to the magical realm of Hogwarts, crafted with modern web technology, rich lore, and procedural ambient audio.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h5>Castle Navigation</h5>
+          <ul>
+            <li><a href="#houses">The Four Houses</a></li>
+            <li><a href="#sorting-hat">Sorting Hat Ceremony</a></li>
+            <li><a href="#spells">Spell Grimoire</a></li>
+            <li><a href="#map">Marauder's Map</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>House Common Rooms</h5>
+          <ul>
+            <li><a href="#houses" class="footer-common-room-btn" data-house="gryffindor">🦁 Gryffindor Tower</a></li>
+            <li><a href="#houses" class="footer-common-room-btn" data-house="slytherin">🐍 Slytherin Dungeon</a></li>
+            <li><a href="#houses" class="footer-common-room-btn" data-house="ravenclaw">🦅 Ravenclaw Observatory</a></li>
+            <li><a href="#houses" class="footer-common-room-btn" data-house="hufflepuff">🦡 Hufflepuff Hearth</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Headmaster's Desk</h5>
+          <ul>
+            <li><a href="#" id="footer-admin-link">🗝️ Secret Vault / Admin</a></li>
+            <li><a href="#" id="footer-spec-link">📜 Architecture Spec</a></li>
+            <li><a href="#spells" id="footer-cast-lumos-link">✨ Cast Lumos</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Mischief Managed. Dedicated to wizarding world fans across the globe.</p>
+        <p style="font-size: 0.75rem; color: #64748b; margin-top: 6px;">
+          Disclaimer: This is an unofficial, non-commercial fan tribute web experience. All Harry Potter characters, names, and related indicia are trademarks of and © Warner Bros. Entertainment Inc. and J.K. Rowling.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal 1: Character Detail Inspect View -->
+  <div id="character-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Character Lore Dossier">
+    <div class="modal-container">
+      <button id="modal-close-btn" class="modal-close-btn" aria-label="Close dossier">✕</button>
+      <div id="modal-char-body">
+        <!-- Filled dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: House Common Room Lore & Experience -->
+  <div id="common-room-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="House Common Room Chamber">
+    <div class="modal-container common-room-modal-container">
+      <button id="common-room-close-btn" class="modal-close-btn" aria-label="Close common room">✕</button>
+      <div id="common-room-body">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Architecture & Engineering Spec -->
+  <div id="spec-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Architecture Specification Dossier">
+    <div class="modal-container spec-modal-container">
+      <button id="spec-modal-close-btn" class="modal-close-btn" aria-label="Close specification">✕</button>
+      <div class="spec-modal-header">
+        <h2 class="cinzel-title" style="color: #d4af37; font-size: 1.6rem; margin-bottom: 6px;">⚡ Hogwarts System Architecture & Engineering Spec</h2>
+        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 16px;">
+          Interactive technical blueprint detailing Web Audio synthesis algorithms, Canvas particle physics, and state engines.
+        </p>
+      </div>
+      <div id="spec-modal-content" class="spec-markdown-body">
+        <!-- Filled dynamically by app.js -->
+      </div>
+      <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+        <a href="PROJECT_SPECIFICATION.md" target="_blank" class="btn-magical-gold" style="font-size: 0.85rem; padding: 8px 18px; text-decoration: none;">
+          📄 Open Raw Markdown File
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Secret Owner / Admin Portal -->
+  <div id="admin-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Owner Admin Chamber">
+    <div class="modal-container">
+      <button id="admin-close-btn" class="modal-close-btn" aria-label="Close chamber">✕</button>
+      
+      <!-- Login View -->
+      <div id="admin-login-view" class="admin-login-box">
+        <div class="admin-login-icon">🗝️</div>
+        <h3 class="cinzel-title">Headmaster & Owner's Sanctum</h3>
+        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 6px;">
+          Speak the secret incantation to open the Chamber (Hint: <em>alohomora</em> or <em>lumos</em>).
+        </p>
+        <form id="admin-login-form" class="admin-login-form">
+          <input type="password" id="admin-passcode-input" class="admin-input" placeholder="Secret incantation..." autocomplete="current-password" required />
+          <button type="submit" class="btn-magical-gold">
+            Unlock Sanctum 🗝️
+          </button>
+        </form>
+      </div>
+
+      <!-- Dashboard View -->
+      <div id="admin-dashboard-view" style="display: none;">
+        <h3 class="cinzel-title" style="color: #d4af37; margin-bottom: 6px;">⚡ Headmaster's Command Console</h3>
+        <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 20px;">
+          Full owner control over website content, sorting statistics, and data exports.
+        </p>
+
+        <!-- Live Sorting Hat Poll Stats -->
+        <div class="admin-stats-box">
+          <h4 class="cinzel-title" style="font-size: 1rem; color: #fff; margin-bottom: 12px;">📊 Live Sorting Hat Distribution</h4>
+          <div id="admin-stats-bars">
+            <!-- Populated by app.js -->
+          </div>
+        </div>
+
+        <!-- Add New Witch / Wizard Form -->
+        <div style="background: rgba(0,0,0,0.4); padding: 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
+          <h4 class="cinzel-title" style="font-size: 1rem; color: #fff; margin-bottom: 12px;">✨ Enroll New Witch / Wizard</h4>
+          <form id="admin-add-character-form">
+            <div class="admin-form-group">
+              <input type="text" id="new-char-name" class="admin-input" placeholder="Full Name (e.g. Sirius Black)" required />
+              <input type="text" id="new-char-title" class="admin-input" placeholder="Title (e.g. Marauder / Prisoner of Azkaban)" required />
+            </div>
+            <div class="admin-form-group">
+              <select id="new-char-house" class="admin-input" required>
+                <option value="gryffindor">Gryffindor</option>
+                <option value="slytherin">Slytherin</option>
+                <option value="ravenclaw">Ravenclaw</option>
+                <option value="hufflepuff">Hufflepuff</option>
+              </select>
+              <input type="text" id="new-char-patronus" class="admin-input" placeholder="Patronus (e.g. Dog)" />
+            </div>
+            <div class="admin-form-group">
+              <input type="text" id="new-char-wand" class="admin-input" placeholder="Wand Specs" />
+              <input type="text" id="new-char-bio" class="admin-input" placeholder="Brief Bio / Lore" />
+            </div>
+            <button type="submit" class="btn-magical-gold" style="width: 100%; margin-top: 10px;">
+              ⚡ Enroll Character
+            </button>
+          </form>
+        </div>
+
+        <!-- Data Export Actions -->
+        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+          <button id="admin-export-json-btn" class="btn-magical-secondary">
+            💾 Export Database JSON
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript App (ES6 Module) -->
+  <script type="module" src="scripts/app.js"></script>
+</body>
+</html>

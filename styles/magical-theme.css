@@ -1,0 +1,155 @@
+/* ==========================================================================
+   MAGICAL THEME & GLASSMORPHISM DESIGN SYSTEM
+   ========================================================================== */
+
+:root {
+  /* Hogwarts Universal Palette */
+  --bg-primary: #0a0b10;
+  --bg-secondary: #12141f;
+  --bg-card: rgba(18, 20, 31, 0.78);
+  --border-gold: #d4af37;
+  --border-subtle: rgba(212, 175, 55, 0.25);
+  --text-parchment: #f4ecd8;
+  --text-muted: #a6a4b2;
+  
+  /* Dynamic House Active Tokens (Default: Gryffindor) */
+  --house-primary: #740001;
+  --house-secondary: #d3a625;
+  --house-accent: #d3a625;
+  --house-glow: rgba(211, 166, 37, 0.45);
+}
+
+/* Glassmorphic Panel Styles */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-hover {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.glass-hover:hover {
+  border-color: var(--house-accent);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 20px var(--house-glow);
+}
+
+/* House Badges & Card Styles */
+.house-gryffindor {
+  --badge-bg: #740001;
+  --badge-border: #d3a625;
+  --badge-text: #ffd700;
+}
+
+.house-slytherin {
+  --badge-bg: #1a472a;
+  --badge-border: #2ecc71;
+  --badge-text: #a8e6cf;
+}
+
+.house-ravenclaw {
+  --badge-bg: #0e1a40;
+  --badge-border: #4ea8de;
+  --badge-text: #c0e8ff;
+}
+
+.house-hufflepuff {
+  --badge-bg: #ecb939;
+  --badge-border: #f39c12;
+  --badge-text: #2c2523;
+}
+
+.char-house-badge.house-gryffindor,
+.modal-char-house-banner.house-gryffindor {
+  background: rgba(116, 0, 1, 0.85);
+  border-color: #d3a625;
+  color: #ffd700;
+}
+
+.char-house-badge.house-slytherin,
+.modal-char-house-banner.house-slytherin {
+  background: rgba(26, 71, 42, 0.85);
+  border-color: #2ecc71;
+  color: #a8e6cf;
+}
+
+.char-house-badge.house-ravenclaw,
+.modal-char-house-banner.house-ravenclaw {
+  background: rgba(14, 26, 64, 0.85);
+  border-color: #4ea8de;
+  color: #c0e8ff;
+}
+
+.char-house-badge.house-hufflepuff,
+.modal-char-house-banner.house-hufflepuff {
+  background: rgba(236, 185, 57, 0.85);
+  border-color: #372e29;
+  color: #1a1715;
+}
+
+/* Gold Filigree Line Accents */
+.gold-filigree-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 30px auto;
+  max-width: 420px;
+}
+
+.gold-filigree-divider::before,
+.gold-filigree-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.6), transparent);
+}
+
+.filigree-emblem {
+  color: var(--house-accent, #d3a625);
+  font-size: 1.1rem;
+}
+
+/* Floating Candle Decor in Hero */
+.floating-candles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.floating-candle {
+  position: absolute;
+  width: 10px;
+  height: 48px;
+  background: linear-gradient(to bottom, #f7f3e8 0%, #d8caa7 100%);
+  border-radius: 4px 4px 2px 2px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.floating-candle::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 16px;
+  background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #ffd700 45%, #ff4500 85%, transparent 100%);
+  border-radius: 50% 50% 35% 35%;
+  filter: drop-shadow(0 0 10px #ffb300) drop-shadow(0 0 20px #ff6f00);
+  animation: flameFlicker 1.8s infinite alternate ease-in-out;
+}
+
+.candle-1 { top: 34%; left: 10%; animation: candleFloat 6s ease-in-out infinite alternate; }
+.candle-2 { top: 28%; left: 22%; animation: candleFloat 7.5s ease-in-out infinite alternate 1s; }
+.candle-3 { top: 35%; right: 12%; animation: candleFloat 5.8s ease-in-out infinite alternate 0.5s; }
+.candle-4 { top: 29%; right: 24%; animation: candleFloat 8s ease-in-out infinite alternate 1.5s; }
+.candle-5 { top: 44%; left: 48%; animation: candleFloat 6.8s ease-in-out infinite alternate 2s; }
