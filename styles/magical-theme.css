@@ -92,7 +92,8 @@
   --bg-card: rgba(10, 16, 12, 0.82);
 }
 
-[data-active-house="patronus"] {
+[data-active-house="patronus"],
+[data-active-theme="patronus"] {
   --house-primary: #0d1b2a;
   --house-secondary: #64dfdf;
   --house-accent: #64dfdf;
@@ -102,6 +103,68 @@
   --bg-primary: #060c16;
   --bg-secondary: #0a1526;
   --bg-card: rgba(12, 24, 40, 0.82);
+}
+
+[data-active-house="marauder"],
+[data-active-theme="marauder"] {
+  --house-primary: #4a3319;
+  --house-secondary: #c8963e;
+  --house-accent: #c8963e;
+  --house-glow: rgba(200, 150, 62, 0.45);
+  --border-gold: #c8963e;
+  --border-subtle: rgba(200, 150, 62, 0.3);
+  --bg-primary: #120e0a;
+  --bg-secondary: #1a140f;
+  --bg-card: rgba(26, 20, 15, 0.82);
+}
+
+[data-active-house="dark-arts"],
+[data-active-theme="dark-arts"] {
+  --house-primary: #080c09;
+  --house-secondary: #00ff88;
+  --house-accent: #00ff88;
+  --house-glow: rgba(0, 255, 136, 0.45);
+  --border-gold: #00e676;
+  --border-subtle: rgba(0, 255, 136, 0.25);
+  --bg-primary: #050706;
+  --bg-secondary: #090e0b;
+  --bg-card: rgba(10, 16, 12, 0.82);
+}
+
+/* Atmospheric Winter Theme */
+[data-active-theme="winter"] {
+  --bg-primary: #060a12;
+  --bg-secondary: #0b1222;
+  --bg-card: rgba(10, 18, 34, 0.85);
+  --border-gold: #a5d8ff;
+  --border-subtle: rgba(165, 216, 255, 0.32);
+  --text-parchment: #eef6ff;
+  --text-muted: #9bb5cf;
+  --house-glow: rgba(165, 216, 255, 0.55);
+}
+
+[data-active-theme="winter"] body {
+  background: radial-gradient(circle at 50% 0%, #0e172a 0%, #060a12 80%);
+}
+
+[data-active-theme="winter"] .site-header {
+  background: rgba(6, 10, 18, 0.92);
+  border-bottom: 1px solid rgba(165, 216, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(165, 216, 255, 0.15);
+}
+
+[data-active-theme="winter"] .glass-panel {
+  border-color: rgba(165, 216, 255, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 15px rgba(165, 216, 255, 0.12);
+}
+
+[data-active-theme="winter"] .hero-vignette {
+  background: radial-gradient(circle at 50% 30%, rgba(6, 10, 18, 0.15) 0%, rgba(6, 10, 18, 0.65) 60%, #060a12 100%);
+}
+
+[data-active-theme="winter"] .floating-candle::before {
+  background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #bdecff 40%, #5dade2 85%, transparent 100%);
+  filter: drop-shadow(0 0 10px #70c4ff) drop-shadow(0 0 20px #3498db);
 }
 
 /* Glassmorphic Panel Styles */

@@ -12,6 +12,8 @@ class ParticleSystem {
     this.ambientEmbers = [];
     this.mouse = { x: -100, y: -100, prevX: -100, prevY: -100, isMoving: false };
     this.wandColor = "gold"; // Default golden wand sparks
+    this.isSnow = false;
+    this.snowflakes = [];
     this.isRunning = false;
     this.moveTimer = null;
   }
@@ -56,6 +58,7 @@ class ParticleSystem {
 
     // Populate initial ambient embers
     this.initAmbientEmbers();
+    this.initSnowflakes();
 
     this.isRunning = true;
     this.animate();
@@ -67,8 +70,29 @@ class ParticleSystem {
     this.canvas.height = window.innerHeight;
   }
 
-  setThemeColor(color) {
+  setThemeColor(color, isSnow = false) {
     this.wandColor = color;
+    this.isSnow = isSnow;
+    if (this.isSnow && this.snowflakes.length === 0) {
+      this.initSnowflakes();
+    }
+  }
+
+  initSnowflakes() {
+    this.snowflakes = [];
+    const count = Math.min(85, Math.floor(window.innerWidth / 18));
+    for (let i = 0; i < count; i++) {
+      this.snowflakes.push({
+        x: Math.random() * (this.canvas ? this.canvas.width : window.innerWidth),
+        y: Math.random() * (this.canvas ? this.canvas.height : window.innerHeight),
+        radius: 1.2 + Math.random() * 2.8,
+        speedY: 0.6 + Math.random() * 1.5,
+        swaySpeed: 0.015 + Math.random() * 0.025,
+        swayAngle: Math.random() * Math.PI * 2,
+        swayRadius: 0.8 + Math.random() * 1.6,
+        alpha: 0.35 + Math.random() * 0.55
+      });
+    }
   }
 
   initAmbientEmbers() {
@@ -101,6 +125,7 @@ class ParticleSystem {
       else if (this.wandColor === "gryffindor") { r = 231; g = 76; b = 60; }
       else if (this.wandColor === "dark-arts" || this.wandColor === "curse") { r = 0; g = 255; b = 136; }
       else if (this.wandColor === "patronus") { r = 100; g = 223; b = 223; }
+      else if (this.wandColor === "winter" || this.isSnow) { r = 180; g = 225; b = 255; }
       else if (this.wandColor === "marauder") { r = 200; g = 150; b = 62; }
       else if (this.wandColor === "silver") { r = 210; g = 230; b = 255; }
 
@@ -126,6 +151,7 @@ class ParticleSystem {
       let r = 255, g = 215, b = 0;
       if (colorType === "slytherin" || colorType === "curse" || colorType === "dark-arts") { r = 0; g = 255; b = 136; }
       else if (colorType === "ravenclaw" || colorType === "patronus") { r = 100; g = 223; b = 223; }
+      else if (colorType === "winter") { r = 190; g = 230; b = 255; }
       else if (colorType === "gryffindor" || colorType === "stupefy") { r = 235; g = 60; b = 60; }
       else if (colorType === "hufflepuff") { r = 243; g = 156; b = 18; }
       else if (colorType === "marauder") { r = 200; g = 150; b = 62; }
@@ -166,12 +192,40 @@ class ParticleSystem {
       if (e.x < -10) e.x = this.canvas.width + 10;
       if (e.x > this.canvas.width + 10) e.x = -10;
 
+      const emberHue = this.isSnow ? (195 + Math.sin(e.pulseVal) * 15) : e.hue;
+
       this.ctx.beginPath();
       this.ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
-      this.ctx.fillStyle = `hsla(${e.hue}, 85%, 65%, ${currentAlpha})`;
-      this.ctx.shadowColor = `hsla(${e.hue}, 90%, 65%, 0.8)`;
+      this.ctx.fillStyle = `hsla(${emberHue}, 85%, 65%, ${currentAlpha})`;
+      this.ctx.shadowColor = `hsla(${emberHue}, 90%, 65%, 0.8)`;
       this.ctx.shadowBlur = 8;
       this.ctx.fill();
+    }
+
+    // 1.5 Draw Falling Snowflakes (Winter Mode)
+    if (this.isSnow && this.snowflakes) {
+      this.ctx.save();
+      for (let i = 0; i < this.snowflakes.length; i++) {
+        const s = this.snowflakes[i];
+        s.y += s.speedY;
+        s.swayAngle += s.swaySpeed;
+        s.x += Math.sin(s.swayAngle) * (s.swayRadius * 0.6);
+
+        if (s.y > this.canvas.height + 10) {
+          s.y = -10;
+          s.x = Math.random() * this.canvas.width;
+        }
+        if (s.x < -10) s.x = this.canvas.width + 10;
+        if (s.x > this.canvas.width + 10) s.x = -10;
+
+        this.ctx.beginPath();
+        this.ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        this.ctx.fillStyle = `rgba(235, 245, 255, ${s.alpha})`;
+        this.ctx.shadowColor = `rgba(180, 225, 255, 0.75)`;
+        this.ctx.shadowBlur = 6;
+        this.ctx.fill();
+      }
+      this.ctx.restore();
     }
 
     // 2. Draw Wand Trail Sparks

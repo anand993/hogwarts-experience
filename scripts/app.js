@@ -11,59 +11,92 @@ import { sortingHat } from "./sortingHat.js";
 import { spellcaster } from "./spellcaster.js";
 import { goldenSnitch } from "./snitch.js";
 
-// Expose switchSiteTheme globally for theme switcher, sortingHat & theme buttons
-window.switchSiteTheme = function(themeKey, playSound = false) {
-  const theme = THEMES_DATA[themeKey] || HOUSES_DATA[themeKey];
+// Set user's sorted house in the navbar (only shows house name once sorted)
+window.setSortedHouse = function(houseKey) {
+  const badge = document.getElementById("navbar-house-badge");
+  const crestWrapper = document.getElementById("nav-house-crest-wrapper");
+  const nameLabel = document.getElementById("nav-house-name-label");
+
+  if (!badge) return;
+
+  const house = HOUSES_DATA[houseKey];
+  if (!house) {
+    // Unsorted State (no default house before sorting ceremony)
+    badge.classList.add("unsorted-badge");
+    badge.title = "Sorting Hat: Not yet sorted. Click to take the Sorting Ceremony!";
+    if (crestWrapper) crestWrapper.innerHTML = `<span class="unsorted-hat-icon">🎓</span>`;
+    if (nameLabel) nameLabel.textContent = "Get Sorted";
+
+    document.documentElement.style.removeProperty("--house-primary");
+    document.documentElement.style.removeProperty("--house-accent");
+    document.documentElement.style.removeProperty("--house-glow");
+    document.documentElement.removeAttribute("data-active-house");
+    return;
+  }
+
+  // Officially Sorted House State
+  badge.classList.remove("unsorted-badge");
+  badge.title = `Hogwarts Allegiance: ${house.name}`;
+  if (crestWrapper) {
+    crestWrapper.innerHTML = `<img src="${house.crestImage}" alt="${house.name} Crest" class="nav-house-crest" />`;
+  }
+  if (nameLabel) {
+    nameLabel.textContent = house.name;
+  }
+
+  document.documentElement.style.setProperty("--house-primary", house.primaryColor);
+  document.documentElement.style.setProperty("--house-accent", house.accentColor);
+  document.documentElement.style.setProperty("--house-glow", house.glowColor);
+  document.documentElement.setAttribute("data-active-house", houseKey);
+
+  try {
+    localStorage.setItem("hogwarts_sorted_house", houseKey);
+  } catch (err) {}
+};
+
+// Switch site-wide atmosphere theme (Dark, Snowy Winter, Parchment, etc.)
+window.switchAtmosphereTheme = function(themeKey, playSound = false) {
+  const theme = THEMES_DATA[themeKey] || THEMES_DATA.dark;
   if (!theme) return;
 
-  document.documentElement.style.setProperty("--house-primary", theme.primaryColor);
-  document.documentElement.style.setProperty("--house-accent", theme.accentColor);
-  document.documentElement.style.setProperty("--house-glow", theme.glowColor);
-  document.documentElement.setAttribute("data-active-house", themeKey);
+  document.documentElement.setAttribute("data-active-theme", theme.id);
 
-  // Update theme trigger button in navbar
-  const crestSpan = document.getElementById("theme-btn-crest");
-  const labelSpan = document.getElementById("theme-btn-label");
-
-  if (crestSpan && labelSpan) {
-    if (theme.iconType === "emoji") {
-      crestSpan.innerHTML = `<span class="theme-emoji-crest">${theme.icon}</span>`;
-    } else {
-      const crestImg = theme.icon || theme.crestImage;
-      crestSpan.innerHTML = `<img src="${crestImg}" alt="${theme.name}" class="nav-house-crest" />`;
-    }
-    labelSpan.textContent = theme.name;
+  // Update hero castle panorama (e.g. snowy winter castle vs twilight castle)
+  const heroImg = document.getElementById("hero-bg-img");
+  if (heroImg && theme.heroImage) {
+    heroImg.src = theme.heroImage;
   }
 
-  // Backward compatibility with older active-house-badge
-  const oldBadge = document.getElementById("active-house-badge");
-  if (oldBadge && !labelSpan) {
-    const crestImg = theme.icon || theme.crestImage;
-    if (crestImg) {
-      oldBadge.innerHTML = `<img src="${crestImg}" alt="${theme.name}" class="nav-house-crest" /> <span class="badge-house-name">${theme.name}</span>`;
-    }
-  }
+  // Update particle system with theme colors and snow physics
+  particleSystem.setThemeColor(theme.particleKey || "gold", !!theme.isSnow);
 
-  // Update active state inside dropdown
+  // Update active state inside theme dropdown
   document.querySelectorAll(".theme-option-btn").forEach(btn => {
-    const isActive = btn.dataset.themeId === themeKey;
+    const isActive = btn.dataset.themeId === theme.id;
     btn.classList.toggle("active-theme", isActive);
     btn.setAttribute("aria-selected", isActive ? "true" : "false");
   });
 
-  // Update particle system colors
-  particleSystem.setThemeColor(theme.particleKey || themeKey);
-
-  // Persist preference across reloads
   try {
-    localStorage.setItem("hogwarts_theme", themeKey);
+    localStorage.setItem("hogwarts_site_theme", theme.id);
   } catch (err) {}
 
-  // Optional sound effect
   if (playSound) {
     try {
       soundEngine.playPatronusSound();
     } catch (err) {}
+  }
+};
+
+// Unified bridge for backward compatibility
+window.switchSiteTheme = function(key, playSound = false) {
+  if (THEMES_DATA[key]) {
+    window.switchAtmosphereTheme(key, playSound);
+  } else if (HOUSES_DATA[key]) {
+    window.setSortedHouse(key);
+    if (playSound) {
+      try { soundEngine.playPatronusSound(); } catch (err) {}
+    }
   }
 };
 
@@ -94,15 +127,20 @@ class WizardingApp {
     this.renderMaraudersMap();
     this.setupCharacterFilters();
     this.setupAudioToggle();
+    this.setupNavbarHouseBadge();
     this.setupThemeSwitcher();
     this.setupAdminPortal();
     this.setupNavSmoothScroll();
     this.setupQuotesRotator();
     this.setupFooterInteractions();
 
-    // Initialize theme from localStorage or default to Gryffindor
-    const savedTheme = localStorage.getItem("hogwarts_theme") || "gryffindor";
-    window.switchSiteTheme(savedTheme, false);
+    // Check if user was previously sorted: NO default house if unsorted!
+    const savedHouse = localStorage.getItem("hogwarts_sorted_house");
+    window.setSortedHouse(savedHouse || null);
+
+    // Initialize atmospheric theme from localStorage (default: dark)
+    const savedTheme = localStorage.getItem("hogwarts_site_theme") || "dark";
+    window.switchAtmosphereTheme(savedTheme, false);
 
     // Expose openAdminPortal globally for Alohomora spell
     window.openAdminPortal = () => this.showAdminModal();
@@ -124,42 +162,34 @@ class WizardingApp {
     });
   }
 
+  setupNavbarHouseBadge() {
+    const badge = document.getElementById("navbar-house-badge");
+    if (!badge) return;
+
+    badge.addEventListener("click", () => {
+      const isUnsorted = badge.classList.contains("unsorted-badge");
+      try { soundEngine.playWandSwoosh(); } catch (err) {}
+      if (isUnsorted) {
+        const sortingSection = document.getElementById("sorting-hat");
+        if (sortingSection) sortingSection.scrollIntoView({ behavior: "smooth" });
+      } else {
+        const housesSection = document.getElementById("houses");
+        if (housesSection) housesSection.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+
   setupThemeSwitcher() {
     const triggerBtn = document.getElementById("theme-picker-btn");
     const dropdownMenu = document.getElementById("theme-dropdown-menu");
-    const housesList = document.getElementById("theme-houses-list");
-    const loreList = document.getElementById("theme-lore-list");
+    const optionsList = document.getElementById("theme-options-list");
 
     if (!triggerBtn || !dropdownMenu) return;
 
-    // Render house options
-    if (housesList) {
-      const houseEntries = Object.values(THEMES_DATA).filter(t => t.category === "house");
-      housesList.innerHTML = houseEntries.map(t => `
-        <button class="theme-option-btn" data-theme-id="${t.id}" role="menuitem" aria-label="${t.name} House Theme">
-          <div class="theme-option-left">
-            <img src="${t.icon}" alt="${t.name} Crest" class="theme-opt-crest" />
-            <div class="theme-opt-info">
-              <span class="theme-opt-name">${t.name}</span>
-              <span class="theme-opt-desc">${t.subtitle}</span>
-            </div>
-          </div>
-          <div class="theme-option-right">
-            <div class="theme-swatches">
-              <span class="theme-swatch-dot" style="background: ${t.primaryColor};" title="Primary Color"></span>
-              <span class="theme-swatch-dot" style="background: ${t.accentColor};" title="Accent Color"></span>
-            </div>
-            <span class="theme-check-icon">✓</span>
-          </div>
-        </button>
-      `).join("");
-    }
-
-    // Render atmospheric lore options
-    if (loreList) {
-      const loreEntries = Object.values(THEMES_DATA).filter(t => t.category === "lore");
-      loreList.innerHTML = loreEntries.map(t => `
-        <button class="theme-option-btn" data-theme-id="${t.id}" role="menuitem" aria-label="${t.name} Lore Theme">
+    // Render atmospheric theme options
+    if (optionsList) {
+      optionsList.innerHTML = Object.values(THEMES_DATA).map(t => `
+        <button class="theme-option-btn" data-theme-id="${t.id}" role="menuitem" aria-label="${t.name}">
           <div class="theme-option-left">
             <span class="theme-opt-emoji">${t.icon}</span>
             <div class="theme-opt-info">
@@ -206,7 +236,7 @@ class WizardingApp {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const themeId = btn.dataset.themeId;
-        window.switchSiteTheme(themeId, true);
+        window.switchAtmosphereTheme(themeId, true);
         closeDropdown();
       });
     });
@@ -277,14 +307,14 @@ class WizardingApp {
         e.stopPropagation();
         const houseId = btn.dataset.house;
         soundEngine.playPatronusSound();
-        window.switchSiteTheme(houseId);
+        window.setSortedHouse(houseId);
       });
     });
 
     container.querySelectorAll(".house-card").forEach(card => {
       card.addEventListener("click", () => {
         const houseId = card.dataset.houseId;
-        window.switchSiteTheme(houseId);
+        window.setSortedHouse(houseId);
       });
     });
   }

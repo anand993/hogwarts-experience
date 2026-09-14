@@ -205,6 +205,38 @@ img {
   color: var(--house-accent, #d3a625);
   box-shadow: 0 0 12px var(--house-glow, rgba(211, 166, 37, 0.3));
   white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.active-house-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px var(--house-glow, rgba(211, 166, 37, 0.5));
+}
+
+.active-house-badge.unsorted-badge {
+  border: 1px dashed rgba(212, 175, 55, 0.5);
+  background: rgba(20, 22, 32, 0.65);
+  color: #f4ecd8;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  animation: unsortedPulse 3s infinite alternate ease-in-out;
+}
+
+.active-house-badge.unsorted-badge:hover {
+  border-style: solid;
+  border-color: #d4af37;
+  color: #ffd700;
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.45);
+}
+
+@keyframes unsortedPulse {
+  0% { box-shadow: 0 0 6px rgba(212, 175, 55, 0.15); border-color: rgba(212, 175, 55, 0.4); }
+  100% { box-shadow: 0 0 14px rgba(212, 175, 55, 0.35); border-color: rgba(212, 175, 55, 0.7); }
+}
+
+.unsorted-hat-icon {
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 .nav-house-crest {
@@ -222,22 +254,45 @@ img {
 }
 
 .btn-theme-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
   outline: none;
   user-select: none;
+  white-space: nowrap;
   transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .btn-theme-trigger:hover,
 .btn-theme-trigger:focus-visible {
   transform: translateY(-1px);
-  border-color: var(--house-accent, #d3a625);
-  box-shadow: 0 0 16px var(--house-glow, rgba(211, 166, 37, 0.45));
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #d4af37;
+  color: #ffd700;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.35);
 }
 
 .btn-theme-trigger[aria-expanded="true"] {
-  border-color: var(--house-accent, #d3a625);
-  box-shadow: 0 0 20px var(--house-glow, rgba(211, 166, 37, 0.5));
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.18);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.45);
+}
+
+.theme-icon-symbol {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.theme-label-text {
+  letter-spacing: 0.03em;
 }
 
 .theme-badge-icon {
@@ -2479,6 +2534,12 @@ img {
     width: auto;
     max-height: calc(100vh - 84px);
     overflow-y: auto;
+  }
+  .btn-theme-trigger .theme-label-text {
+    display: none;
+  }
+  .btn-theme-trigger {
+    padding: 6px 10px;
   }
   .btn-audio-toggle .audio-label {
     display: none;

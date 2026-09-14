@@ -62,28 +62,30 @@
           <span id="house-points-counter">0 pts</span>
         </button>
 
-        <!-- Active House Badge & Interactive Theme Switcher -->
+        <!-- House Allegiance Badge (Shows House name only once Sorting Ceremony is completed) -->
+        <button id="navbar-house-badge" class="active-house-badge unsorted-badge" title="Sorting Hat: Not yet sorted. Click to take the Sorting Ceremony!">
+          <span id="nav-house-crest-wrapper" class="theme-badge-icon">
+            <span class="unsorted-hat-icon">🎓</span>
+          </span>
+          <span id="nav-house-name-label" class="badge-house-name">Get Sorted</span>
+        </button>
+
+        <!-- Atmospheric Realm Theme Switcher Icon -->
         <div class="theme-switcher-wrapper" id="theme-switcher-wrapper">
-          <button id="theme-picker-btn" class="active-house-badge btn-theme-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="theme-dropdown-menu" title="Switch Hogwarts Allegiance & Atmosphere Realm (Click to change theme)">
-            <span id="theme-btn-crest" class="theme-badge-icon">
-              <img src="assets/images/crest-gryffindor.jpg" alt="Gryffindor" class="nav-house-crest" />
-            </span>
-            <span id="theme-btn-label" class="badge-house-name">Gryffindor</span>
+          <button id="theme-picker-btn" class="btn-theme-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="theme-dropdown-menu" title="Change Atmosphere Theme (Dark, Snowy Winter, etc.)">
+            <span class="theme-icon-symbol">🎨</span>
+            <span class="theme-label-text">Theme</span>
             <span class="theme-btn-arrow" aria-hidden="true">▾</span>
           </button>
 
           <!-- Dropdown Popover Menu -->
           <div class="theme-dropdown-menu glass-panel" id="theme-dropdown-menu" role="menu" aria-label="Theme Selection" hidden>
             <div class="theme-menu-header">
-              <span class="theme-menu-title cinzel-title">⚡ Magical Allegiance</span>
-              <span class="theme-menu-subtitle">Switch house colors & atmospheric realm</span>
+              <span class="theme-menu-title cinzel-title">✨ Atmosphere Realms</span>
+              <span class="theme-menu-subtitle">Switch visual theme & magical ambiance</span>
             </div>
 
-            <div class="theme-group-label">Hogwarts Houses</div>
-            <div class="theme-options-list" id="theme-houses-list"></div>
-
-            <div class="theme-group-label">Atmospheric Realms</div>
-            <div class="theme-options-list" id="theme-lore-list"></div>
+            <div class="theme-options-list" id="theme-options-list"></div>
           </div>
         </div>
 
@@ -106,7 +108,7 @@
     <!-- Hero Section -->
     <section class="hero-section" id="hero">
       <div class="hero-bg-wrapper">
-        <img src="assets/images/hogwarts-twilight.jpg" alt="Hogwarts Castle at Twilight" class="hero-bg-img" />
+        <img id="hero-bg-img" src="assets/images/hogwarts-twilight.jpg" alt="Hogwarts Castle" class="hero-bg-img" />
         <div class="hero-vignette"></div>
       </div>
 

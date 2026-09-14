@@ -219,7 +219,8 @@ class SortingHatCeremony {
     if (applyBtn) {
       applyBtn.addEventListener("click", () => {
         soundEngine.playPatronusSound();
-        window.switchSiteTheme(bestHouse);
+        if (window.setSortedHouse) window.setSortedHouse(bestHouse);
+        if (window.switchSiteTheme) window.switchSiteTheme(bestHouse);
         applyBtn.textContent = `✓ ${houseData.name} Theme Active`;
       });
     }
@@ -233,8 +234,9 @@ class SortingHatCeremony {
       });
     }
 
-    // Automatically trigger theme update
-    window.switchSiteTheme(bestHouse);
+    // Automatically trigger house allegiance update
+    if (window.setSortedHouse) window.setSortedHouse(bestHouse);
+    if (window.switchSiteTheme) window.switchSiteTheme(bestHouse);
   }
 
   recordHouseStat(houseId) {
