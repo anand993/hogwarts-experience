@@ -258,6 +258,19 @@ class WizardingApp {
   }
 
   setupNavSmoothScroll() {
+    const header = document.querySelector(".site-header");
+    if (header) {
+      const updateHeaderState = () => {
+        if (window.scrollY > 35) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      };
+      window.addEventListener("scroll", updateHeaderState, { passive: true });
+      updateHeaderState();
+    }
+
     const links = document.querySelectorAll(".nav-link");
     links.forEach(link => {
       link.addEventListener("click", (e) => {

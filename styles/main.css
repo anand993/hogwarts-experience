@@ -73,19 +73,25 @@ img {
   letter-spacing: 0.08em;
 }
 
-/* Navigation Bar - Original Full-Width Top Bar Style */
+/* Navigation Bar - Frosted Translucent Glassmorphism */
 .site-header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
+  background: rgba(10, 11, 16, 0.60);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.site-header.scrolled {
   background: rgba(10, 11, 16, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-  transition: all 0.3s ease;
+  border-bottom-color: rgba(212, 175, 55, 0.32);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.75);
 }
 
 .nav-inner {
