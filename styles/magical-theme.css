@@ -19,6 +19,91 @@
   --house-glow: rgba(211, 166, 37, 0.45);
 }
 
+/* Dynamic Active House / Lore Tokens */
+[data-active-house="gryffindor"] {
+  --house-primary: #740001;
+  --house-secondary: #d3a625;
+  --house-accent: #d3a625;
+  --house-glow: rgba(211, 166, 37, 0.45);
+  --border-gold: #d4af37;
+  --border-subtle: rgba(212, 175, 55, 0.25);
+  --bg-primary: #0a0b10;
+  --bg-secondary: #12141f;
+  --bg-card: rgba(18, 20, 31, 0.78);
+}
+
+[data-active-house="slytherin"] {
+  --house-primary: #1a472a;
+  --house-secondary: #2ecc71;
+  --house-accent: #2ecc71;
+  --house-glow: rgba(46, 204, 113, 0.45);
+  --border-gold: #2ecc71;
+  --border-subtle: rgba(46, 204, 113, 0.25);
+  --bg-primary: #070d0a;
+  --bg-secondary: #0c1712;
+  --bg-card: rgba(12, 23, 18, 0.78);
+}
+
+[data-active-house="ravenclaw"] {
+  --house-primary: #0e1a40;
+  --house-secondary: #4ea8de;
+  --house-accent: #4ea8de;
+  --house-glow: rgba(78, 168, 222, 0.45);
+  --border-gold: #4ea8de;
+  --border-subtle: rgba(78, 168, 222, 0.25);
+  --bg-primary: #070a14;
+  --bg-secondary: #0d1322;
+  --bg-card: rgba(13, 19, 34, 0.78);
+}
+
+[data-active-house="hufflepuff"] {
+  --house-primary: #ecb939;
+  --house-secondary: #f39c12;
+  --house-accent: #f39c12;
+  --house-glow: rgba(243, 156, 18, 0.45);
+  --border-gold: #f39c12;
+  --border-subtle: rgba(243, 156, 18, 0.25);
+  --bg-primary: #0c0a07;
+  --bg-secondary: #17140e;
+  --bg-card: rgba(23, 20, 14, 0.78);
+}
+
+[data-active-house="marauder"] {
+  --house-primary: #4a3319;
+  --house-secondary: #c8963e;
+  --house-accent: #c8963e;
+  --house-glow: rgba(200, 150, 62, 0.45);
+  --border-gold: #c8963e;
+  --border-subtle: rgba(200, 150, 62, 0.3);
+  --bg-primary: #120e0a;
+  --bg-secondary: #1a140f;
+  --bg-card: rgba(26, 20, 15, 0.82);
+}
+
+[data-active-house="dark-arts"] {
+  --house-primary: #080c09;
+  --house-secondary: #00ff88;
+  --house-accent: #00ff88;
+  --house-glow: rgba(0, 255, 136, 0.45);
+  --border-gold: #00e676;
+  --border-subtle: rgba(0, 255, 136, 0.25);
+  --bg-primary: #050706;
+  --bg-secondary: #090e0b;
+  --bg-card: rgba(10, 16, 12, 0.82);
+}
+
+[data-active-house="patronus"] {
+  --house-primary: #0d1b2a;
+  --house-secondary: #64dfdf;
+  --house-accent: #64dfdf;
+  --house-glow: rgba(100, 223, 223, 0.45);
+  --border-gold: #64dfdf;
+  --border-subtle: rgba(100, 223, 223, 0.3);
+  --bg-primary: #060c16;
+  --bg-secondary: #0a1526;
+  --bg-card: rgba(12, 24, 40, 0.82);
+}
+
 /* Glassmorphic Panel Styles */
 .glass-panel {
   background: var(--bg-card);

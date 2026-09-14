@@ -99,6 +99,9 @@ class ParticleSystem {
       else if (this.wandColor === "ravenclaw") { r = 78; g = 168; b = 222; }
       else if (this.wandColor === "hufflepuff") { r = 241; g = 196; b = 15; }
       else if (this.wandColor === "gryffindor") { r = 231; g = 76; b = 60; }
+      else if (this.wandColor === "dark-arts" || this.wandColor === "curse") { r = 0; g = 255; b = 136; }
+      else if (this.wandColor === "patronus") { r = 100; g = 223; b = 223; }
+      else if (this.wandColor === "marauder") { r = 200; g = 150; b = 62; }
       else if (this.wandColor === "silver") { r = 210; g = 230; b = 255; }
 
       this.particles.push({
@@ -121,10 +124,11 @@ class ParticleSystem {
       const speed = 2 + Math.random() * 5.5;
 
       let r = 255, g = 215, b = 0;
-      if (colorType === "slytherin" || colorType === "curse") { r = 46; g = 204; b = 113; }
-      else if (colorType === "ravenclaw" || colorType === "patronus") { r = 180; g = 225; b = 255; }
+      if (colorType === "slytherin" || colorType === "curse" || colorType === "dark-arts") { r = 0; g = 255; b = 136; }
+      else if (colorType === "ravenclaw" || colorType === "patronus") { r = 100; g = 223; b = 223; }
       else if (colorType === "gryffindor" || colorType === "stupefy") { r = 235; g = 60; b = 60; }
       else if (colorType === "hufflepuff") { r = 243; g = 156; b = 18; }
+      else if (colorType === "marauder") { r = 200; g = 150; b = 62; }
       else if (colorType === "lumos") { r = 255; g = 250; b = 220; }
 
       this.particles.push({

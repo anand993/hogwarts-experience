@@ -98,6 +98,107 @@ export const HOUSES_DATA = {
   }
 };
 
+export const THEMES_DATA = {
+  gryffindor: {
+    id: "gryffindor",
+    name: "Gryffindor",
+    category: "house",
+    subtitle: "Scarlet & Gold",
+    iconType: "image",
+    icon: "assets/images/crest-gryffindor.jpg",
+    primaryColor: "#740001",
+    accentColor: "#d3a625",
+    glowColor: "rgba(211, 166, 37, 0.45)",
+    bgPrimary: "#0a0b10",
+    bgSecondary: "#12141f",
+    particleKey: "gryffindor"
+  },
+  slytherin: {
+    id: "slytherin",
+    name: "Slytherin",
+    category: "house",
+    subtitle: "Emerald & Silver",
+    iconType: "image",
+    icon: "assets/images/crest-slytherin.jpg",
+    primaryColor: "#1a472a",
+    accentColor: "#2ecc71",
+    glowColor: "rgba(46, 204, 113, 0.45)",
+    bgPrimary: "#070d0a",
+    bgSecondary: "#0c1712",
+    particleKey: "slytherin"
+  },
+  ravenclaw: {
+    id: "ravenclaw",
+    name: "Ravenclaw",
+    category: "house",
+    subtitle: "Sapphire & Bronze",
+    iconType: "image",
+    icon: "assets/images/crest-ravenclaw.jpg",
+    primaryColor: "#0e1a40",
+    accentColor: "#4ea8de",
+    glowColor: "rgba(78, 168, 222, 0.45)",
+    bgPrimary: "#070a14",
+    bgSecondary: "#0d1322",
+    particleKey: "ravenclaw"
+  },
+  hufflepuff: {
+    id: "hufflepuff",
+    name: "Hufflepuff",
+    category: "house",
+    subtitle: "Honey & Obsidian",
+    iconType: "image",
+    icon: "assets/images/crest-hufflepuff.jpg",
+    primaryColor: "#ecb939",
+    accentColor: "#f39c12",
+    glowColor: "rgba(243, 156, 18, 0.45)",
+    bgPrimary: "#0c0a07",
+    bgSecondary: "#17140e",
+    particleKey: "hufflepuff"
+  },
+  marauder: {
+    id: "marauder",
+    name: "Marauder's Parchment",
+    category: "lore",
+    subtitle: "Ancient Map & Vellum",
+    iconType: "emoji",
+    icon: "📜",
+    primaryColor: "#4a3319",
+    accentColor: "#c8963e",
+    glowColor: "rgba(200, 150, 62, 0.45)",
+    bgPrimary: "#120e0a",
+    bgSecondary: "#1a140f",
+    particleKey: "gold"
+  },
+  "dark-arts": {
+    id: "dark-arts",
+    name: "Dark Arts",
+    category: "lore",
+    subtitle: "Obsidian & Basilisk",
+    iconType: "emoji",
+    icon: "💀",
+    primaryColor: "#080c09",
+    accentColor: "#00ff88",
+    glowColor: "rgba(0, 255, 136, 0.45)",
+    bgPrimary: "#040605",
+    bgSecondary: "#080d0a",
+    particleKey: "curse"
+  },
+  patronus: {
+    id: "patronus",
+    name: "Expecto Patronus",
+    category: "lore",
+    subtitle: "Starlight & Silver Mist",
+    iconType: "emoji",
+    icon: "✨",
+    primaryColor: "#0d1b2a",
+    accentColor: "#64dfdf",
+    glowColor: "rgba(100, 223, 223, 0.45)",
+    bgPrimary: "#060c16",
+    bgSecondary: "#0a1526",
+    particleKey: "patronus"
+  }
+};
+
 export const CHARACTERS_DATA = [
   {
     id: "harry-potter",

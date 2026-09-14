@@ -215,6 +215,236 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Interactive Theme Switcher Wrapper & Trigger Button */
+.theme-switcher-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-theme-trigger {
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-theme-trigger:hover,
+.btn-theme-trigger:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--house-accent, #d3a625);
+  box-shadow: 0 0 16px var(--house-glow, rgba(211, 166, 37, 0.45));
+}
+
+.btn-theme-trigger[aria-expanded="true"] {
+  border-color: var(--house-accent, #d3a625);
+  box-shadow: 0 0 20px var(--house-glow, rgba(211, 166, 37, 0.5));
+}
+
+.theme-badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-emoji-crest {
+  font-size: 0.95rem;
+  line-height: 1;
+  display: inline-block;
+}
+
+.theme-btn-arrow {
+  font-size: 0.7rem;
+  color: var(--house-accent, #d3a625);
+  margin-left: 2px;
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+
+.btn-theme-trigger[aria-expanded="true"] .theme-btn-arrow {
+  transform: rotate(180deg);
+}
+
+/* Floating Glassmorphic Theme Dropdown Menu */
+.theme-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 310px;
+  background: rgba(13, 16, 26, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-gold, #d4af37);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8), 0 0 25px var(--house-glow, rgba(211, 166, 37, 0.3));
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: themeDropdownEntrance 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.theme-dropdown-menu[hidden] {
+  display: none !important;
+}
+
+@keyframes themeDropdownEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.theme-menu-header {
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 8px;
+  margin-bottom: 2px;
+}
+
+.theme-menu-title {
+  font-size: 0.88rem;
+  color: var(--border-gold, #d4af37);
+  display: block;
+  letter-spacing: 0.05em;
+}
+
+.theme-menu-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted, #a6a4b2);
+  display: block;
+  margin-top: 2px;
+}
+
+.theme-group-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c9b98d;
+  margin-top: 4px;
+}
+
+.theme-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.theme-option-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: var(--text-parchment, #f4ecd8);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.theme-option-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateX(3px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.theme-option-btn.active-theme {
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0.05));
+  border-color: var(--house-accent, #d3a625);
+  box-shadow: 0 0 14px var(--house-glow, rgba(211, 166, 37, 0.35));
+}
+
+.theme-option-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-opt-crest {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  flex-shrink: 0;
+}
+
+.theme-opt-emoji {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  flex-shrink: 0;
+}
+
+.theme-opt-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-opt-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-parchment, #f4ecd8);
+  letter-spacing: 0.02em;
+}
+
+.theme-option-btn.active-theme .theme-opt-name {
+  color: var(--house-accent, #d3a625);
+}
+
+.theme-opt-desc {
+  font-size: 0.67rem;
+  color: var(--text-muted, #a6a4b2);
+}
+
+.theme-option-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-swatches {
+  display: flex;
+  gap: 4px;
+}
+
+.theme-swatch-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.theme-check-icon {
+  font-size: 0.85rem;
+  color: var(--house-accent, #d3a625);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s ease;
+}
+
+.theme-option-btn.active-theme .theme-check-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .btn-audio-toggle {
   display: flex;
   align-items: center;
@@ -2240,6 +2470,15 @@ img {
   }
   .active-house-badge span.badge-house-name {
     display: none;
+  }
+  .theme-dropdown-menu {
+    position: fixed;
+    top: 68px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-height: calc(100vh - 84px);
+    overflow-y: auto;
   }
   .btn-audio-toggle .audio-label {
     display: none;

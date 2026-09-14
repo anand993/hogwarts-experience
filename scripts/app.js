@@ -4,30 +4,67 @@
  * Marauder's Map interactions, House theming, and the Owner/Admin Portal.
  */
 
-import { HOUSES_DATA, CHARACTERS_DATA, BEASTS_DATA, HOGWARTS_MAP_LOCATIONS, SPELLS_DATA } from "./data.js";
+import { HOUSES_DATA, THEMES_DATA, CHARACTERS_DATA, BEASTS_DATA, HOGWARTS_MAP_LOCATIONS, SPELLS_DATA } from "./data.js";
 import { soundEngine } from "./audio.js";
 import { particleSystem } from "./particles.js";
 import { sortingHat } from "./sortingHat.js";
 import { spellcaster } from "./spellcaster.js";
 import { goldenSnitch } from "./snitch.js";
 
-// Expose switchSiteTheme globally for sortingHat & theme buttons
-window.switchSiteTheme = function(houseKey) {
-  const house = HOUSES_DATA[houseKey];
-  if (!house) return;
+// Expose switchSiteTheme globally for theme switcher, sortingHat & theme buttons
+window.switchSiteTheme = function(themeKey, playSound = false) {
+  const theme = THEMES_DATA[themeKey] || HOUSES_DATA[themeKey];
+  if (!theme) return;
 
-  document.documentElement.style.setProperty("--house-primary", house.primaryColor);
-  document.documentElement.style.setProperty("--house-accent", house.accentColor);
-  document.documentElement.style.setProperty("--house-glow", house.glowColor);
-  document.documentElement.setAttribute("data-active-house", houseKey);
+  document.documentElement.style.setProperty("--house-primary", theme.primaryColor);
+  document.documentElement.style.setProperty("--house-accent", theme.accentColor);
+  document.documentElement.style.setProperty("--house-glow", theme.glowColor);
+  document.documentElement.setAttribute("data-active-house", themeKey);
 
-  // Update active crest badge in navbar
-  const activeBadge = document.getElementById("active-house-badge");
-  if (activeBadge) {
-    activeBadge.innerHTML = `<img src="${house.crestImage}" alt="${house.name}" class="nav-house-crest" /> <span class="badge-house-name">${house.name}</span>`;
+  // Update theme trigger button in navbar
+  const crestSpan = document.getElementById("theme-btn-crest");
+  const labelSpan = document.getElementById("theme-btn-label");
+
+  if (crestSpan && labelSpan) {
+    if (theme.iconType === "emoji") {
+      crestSpan.innerHTML = `<span class="theme-emoji-crest">${theme.icon}</span>`;
+    } else {
+      const crestImg = theme.icon || theme.crestImage;
+      crestSpan.innerHTML = `<img src="${crestImg}" alt="${theme.name}" class="nav-house-crest" />`;
+    }
+    labelSpan.textContent = theme.name;
   }
 
-  particleSystem.setThemeColor(houseKey);
+  // Backward compatibility with older active-house-badge
+  const oldBadge = document.getElementById("active-house-badge");
+  if (oldBadge && !labelSpan) {
+    const crestImg = theme.icon || theme.crestImage;
+    if (crestImg) {
+      oldBadge.innerHTML = `<img src="${crestImg}" alt="${theme.name}" class="nav-house-crest" /> <span class="badge-house-name">${theme.name}</span>`;
+    }
+  }
+
+  // Update active state inside dropdown
+  document.querySelectorAll(".theme-option-btn").forEach(btn => {
+    const isActive = btn.dataset.themeId === themeKey;
+    btn.classList.toggle("active-theme", isActive);
+    btn.setAttribute("aria-selected", isActive ? "true" : "false");
+  });
+
+  // Update particle system colors
+  particleSystem.setThemeColor(theme.particleKey || themeKey);
+
+  // Persist preference across reloads
+  try {
+    localStorage.setItem("hogwarts_theme", themeKey);
+  } catch (err) {}
+
+  // Optional sound effect
+  if (playSound) {
+    try {
+      soundEngine.playPatronusSound();
+    } catch (err) {}
+  }
 };
 
 class WizardingApp {
@@ -57,13 +94,15 @@ class WizardingApp {
     this.renderMaraudersMap();
     this.setupCharacterFilters();
     this.setupAudioToggle();
+    this.setupThemeSwitcher();
     this.setupAdminPortal();
     this.setupNavSmoothScroll();
     this.setupQuotesRotator();
     this.setupFooterInteractions();
 
-    // Default theme: Gryffindor
-    window.switchSiteTheme("gryffindor");
+    // Initialize theme from localStorage or default to Gryffindor
+    const savedTheme = localStorage.getItem("hogwarts_theme") || "gryffindor";
+    window.switchSiteTheme(savedTheme, false);
 
     // Expose openAdminPortal globally for Alohomora spell
     window.openAdminPortal = () => this.showAdminModal();
@@ -81,6 +120,109 @@ class WizardingApp {
       } else {
         btn.classList.remove("audio-active");
         btn.innerHTML = `<span class="audio-icon">🔇</span> <span class="audio-label">Atmosphere</span>`;
+      }
+    });
+  }
+
+  setupThemeSwitcher() {
+    const triggerBtn = document.getElementById("theme-picker-btn");
+    const dropdownMenu = document.getElementById("theme-dropdown-menu");
+    const housesList = document.getElementById("theme-houses-list");
+    const loreList = document.getElementById("theme-lore-list");
+
+    if (!triggerBtn || !dropdownMenu) return;
+
+    // Render house options
+    if (housesList) {
+      const houseEntries = Object.values(THEMES_DATA).filter(t => t.category === "house");
+      housesList.innerHTML = houseEntries.map(t => `
+        <button class="theme-option-btn" data-theme-id="${t.id}" role="menuitem" aria-label="${t.name} House Theme">
+          <div class="theme-option-left">
+            <img src="${t.icon}" alt="${t.name} Crest" class="theme-opt-crest" />
+            <div class="theme-opt-info">
+              <span class="theme-opt-name">${t.name}</span>
+              <span class="theme-opt-desc">${t.subtitle}</span>
+            </div>
+          </div>
+          <div class="theme-option-right">
+            <div class="theme-swatches">
+              <span class="theme-swatch-dot" style="background: ${t.primaryColor};" title="Primary Color"></span>
+              <span class="theme-swatch-dot" style="background: ${t.accentColor};" title="Accent Color"></span>
+            </div>
+            <span class="theme-check-icon">✓</span>
+          </div>
+        </button>
+      `).join("");
+    }
+
+    // Render atmospheric lore options
+    if (loreList) {
+      const loreEntries = Object.values(THEMES_DATA).filter(t => t.category === "lore");
+      loreList.innerHTML = loreEntries.map(t => `
+        <button class="theme-option-btn" data-theme-id="${t.id}" role="menuitem" aria-label="${t.name} Lore Theme">
+          <div class="theme-option-left">
+            <span class="theme-opt-emoji">${t.icon}</span>
+            <div class="theme-opt-info">
+              <span class="theme-opt-name">${t.name}</span>
+              <span class="theme-opt-desc">${t.subtitle}</span>
+            </div>
+          </div>
+          <div class="theme-option-right">
+            <div class="theme-swatches">
+              <span class="theme-swatch-dot" style="background: ${t.primaryColor};" title="Primary Color"></span>
+              <span class="theme-swatch-dot" style="background: ${t.accentColor};" title="Accent Color"></span>
+            </div>
+            <span class="theme-check-icon">✓</span>
+          </div>
+        </button>
+      `).join("");
+    }
+
+    const openDropdown = () => {
+      dropdownMenu.removeAttribute("hidden");
+      triggerBtn.setAttribute("aria-expanded", "true");
+    };
+
+    const closeDropdown = () => {
+      dropdownMenu.setAttribute("hidden", "");
+      triggerBtn.setAttribute("aria-expanded", "false");
+    };
+
+    const toggleDropdown = (e) => {
+      e.stopPropagation();
+      const isHidden = dropdownMenu.hasAttribute("hidden");
+      if (isHidden) {
+        openDropdown();
+        try { soundEngine.playWandSwoosh(); } catch (err) {}
+      } else {
+        closeDropdown();
+      }
+    };
+
+    triggerBtn.addEventListener("click", toggleDropdown);
+
+    // Option click listeners
+    dropdownMenu.querySelectorAll(".theme-option-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const themeId = btn.dataset.themeId;
+        window.switchSiteTheme(themeId, true);
+        closeDropdown();
+      });
+    });
+
+    // Close on click outside
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.hasAttribute("hidden") && !triggerBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        closeDropdown();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !dropdownMenu.hasAttribute("hidden")) {
+        closeDropdown();
+        triggerBtn.focus();
       }
     });
   }
