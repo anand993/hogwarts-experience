@@ -286,6 +286,24 @@ img {
   box-shadow: 0 0 18px rgba(212, 175, 55, 0.45);
 }
 
+.btn-theme-trigger.theme-icon-only {
+  padding: 5px 9px 5px 10px;
+  gap: 3px;
+  border-radius: 20px;
+  min-height: 30px;
+}
+
+.btn-theme-trigger.theme-icon-only .theme-icon-symbol {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.btn-theme-trigger.theme-icon-only .theme-btn-arrow {
+  font-size: 0.65rem;
+  color: var(--house-accent, #d3a625);
+  margin-left: 1px;
+}
+
 .theme-icon-symbol {
   font-size: 0.95rem;
   line-height: 1;
